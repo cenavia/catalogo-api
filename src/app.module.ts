@@ -1,8 +1,13 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Module,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
+import { AuthModule } from './auth/auth.module';
 import { validate } from './config/env.validation';
 import { typeOrmConfigFactory } from './config/typeorm.config';
 import { ProductsModule } from './products/products.module';
@@ -22,6 +27,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     ProductsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -34,6 +40,8 @@ import { UsersModule } from './users/users.module';
         transform: true, // convierte el payload a la clase DTO (y tipos primitivos)
       }),
     },
+    // Aplica @Exclude()/@Expose() de class-transformer a TODAS las respuestas.
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })
 export class AppModule {}

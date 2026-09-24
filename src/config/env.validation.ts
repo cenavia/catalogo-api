@@ -1,11 +1,14 @@
 import { plainToInstance } from 'class-transformer';
 import {
   IsBoolean,
+  IsEmail,
   IsEnum,
   IsInt,
+  IsOptional,
   IsString,
   Max,
   Min,
+  MinLength,
   validateSync,
 } from 'class-validator';
 
@@ -43,6 +46,24 @@ class EnvironmentVariables {
 
   @IsBoolean()
   DB_SYNC: boolean = false;
+
+  // --- JWT ---
+  @IsString()
+  @MinLength(16)
+  JWT_SECRET: string;
+
+  @IsString()
+  JWT_EXPIRES_IN: string = '1h'; // formato de "ms": 60s, 15m, 1h, 7d
+
+  // --- Admin de demo (opcional) ---
+  @IsOptional()
+  @IsEmail()
+  ADMIN_EMAIL?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(8)
+  ADMIN_PASSWORD?: string;
 }
 
 // ConfigModule llama a esta función al arrancar: si falta algo, la app NO arranca.
