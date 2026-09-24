@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from '../../products/entities/product.entity';
 
 export type Role = 'user' | 'admin';
 
@@ -18,4 +19,7 @@ export class User {
 
   @Column({ type: 'varchar', length: 20, default: 'user' })
   role: Role;
+
+  @OneToMany(() => Product, (p) => p.owner)
+  products: Product[];
 }

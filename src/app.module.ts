@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { validate } from './config/env.validation';
 import { typeOrmConfigFactory } from './config/typeorm.config';
+import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
       useFactory: typeOrmConfigFactory,
     }),
     UsersModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [
