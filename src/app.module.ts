@@ -1,8 +1,10 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { validate } from './config/env.validation';
+import { typeOrmConfigFactory } from './config/typeorm.config';
 
 @Module({
   imports: [
@@ -10,6 +12,11 @@ import { validate } from './config/env.validation';
       isGlobal: true, // ConfigService inyectable en cualquier módulo
       envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
       validate,
+    }),
+    // forRootAsync: espera a que ConfigModule haya cargado el .env
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: typeOrmConfigFactory,
     }),
   ],
   controllers: [AppController],
