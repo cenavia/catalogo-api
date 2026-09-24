@@ -6,6 +6,7 @@ import {
   IsString,
   Max,
   Min,
+  MinLength,
   validateSync,
 } from 'class-validator';
 
@@ -43,6 +44,14 @@ class EnvironmentVariables {
 
   @IsBoolean()
   DB_SYNC: boolean = false;
+
+  // --- JWT ---
+  @IsString()
+  @MinLength(16)
+  JWT_SECRET: string;
+
+  @IsString()
+  JWT_EXPIRES_IN: string = '1h'; // formato de "ms": 60s, 15m, 1h, 7d
 }
 
 // ConfigModule llama a esta función al arrancar: si falta algo, la app NO arranca.
