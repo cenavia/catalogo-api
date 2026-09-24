@@ -1,0 +1,12 @@
+# dependencias y build
+node_modules/
+dist/
+coverage/
+
+# entorno (nunca subir secretos)
+.env
+.env.test
+
+# logs y SO
+*.log
+.DS_Store
