@@ -1,8 +1,10 @@
 import { plainToInstance } from 'class-transformer';
 import {
   IsBoolean,
+  IsEmail,
   IsEnum,
   IsInt,
+  IsOptional,
   IsString,
   Max,
   Min,
@@ -52,6 +54,16 @@ class EnvironmentVariables {
 
   @IsString()
   JWT_EXPIRES_IN: string = '1h'; // formato de "ms": 60s, 15m, 1h, 7d
+
+  // --- Admin de demo (opcional) ---
+  @IsOptional()
+  @IsEmail()
+  ADMIN_EMAIL?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(8)
+  ADMIN_PASSWORD?: string;
 }
 
 // ConfigModule llama a esta función al arrancar: si falta algo, la app NO arranca.
