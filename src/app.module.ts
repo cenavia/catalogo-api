@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 import { validate } from './config/env.validation';
 import { typeOrmConfigFactory } from './config/typeorm.config';
 import { ProductsModule } from './products/products.module';
@@ -43,6 +44,7 @@ import { UsersModule } from './users/users.module';
     },
     // Interceptores globales: se ejecutan en el orden en que se registran.
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: TimeoutInterceptor },
     // Aplica @Exclude()/@Expose() de class-transformer a TODAS las respuestas.
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],

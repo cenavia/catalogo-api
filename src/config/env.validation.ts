@@ -28,6 +28,10 @@ class EnvironmentVariables {
   @Max(65535)
   PORT: number = 3000;
 
+  @IsInt()
+  @Min(1)
+  REQUEST_TIMEOUT_MS: number = 5000;
+
   // --- Base de datos ---
   @IsString()
   DB_HOST: string;
