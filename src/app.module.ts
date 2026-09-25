@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
@@ -27,6 +28,8 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
       useFactory: typeOrmConfigFactory,
     }),
+    // Límite: 5 peticiones / 60 s por IP. Solo se aplica donde se use ThrottlerGuard.
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 5 }]),
     UsersModule,
     ProductsModule,
     AuthModule,
